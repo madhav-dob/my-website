@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Loading.....</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Courier New', Courier, monospace;
+        background-color: black;
+        color: white;
+        text-align: center;
+      }
+      .loader {
+        margin: 5% auto;
+        width: 60%;
+        height: 30%;
+        text-align: left;
+        overflow: hidden;
+        border: 1px solid white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px white;
+      }
+      .loader pre {
+        margin: 0;
+        padding: 0px;
+        font-size: 0.9rem;
+        line-height: 1.0rem;
+      }
+      .loader pre.red {
+        color: red;
+      }
+      .loader pre.green {
+        color: green;
+      }
+      .loader pre.yellow {
+        color: rgb(251, 255, 0);
+      }
+    </style>
+    <script>
+function displayImageAboveEverything() {
+  setTimeout(function() {
+    // Create a new image element
+    var img = document.createElement('img');
+
+    // Set the source (URL) of the image
+    img.src = 'https://s3.amazonaws.com/madhav.ga/face.png';
+
+    // Set CSS properties to position the image above everything
+    img.style.position = 'absolute';
+    img.style.top = '0';
+    img.style.left = '0';
+    img.style.zIndex = '9999';
+
+    // Add the image element to the document body
+    document.body.appendChild(img);
+  }, 2000); // Delay of 2000 milliseconds (2 seconds)
+  //return;
+}
+function displayVideoAboveEverything() {
+  // Create a new video element
+  var video = document.createElement('video');
+
+  // Set the source (URL) of the video
+  video.src = 'https://s3.amazonaws.com/madhav.ga/video';
+
+  // Set CSS properties to position the video above everything
+  video.style.position = 'absolute';
+  video.style.top = '0';
+  video.style.left = '0';
+  video.style.zIndex = '9999';
+  video.controls = false;
+  video.autoplay = true;
+
+
+  // Add additional video attributes if needed (e.g., controls, autoplay, etc.)
+  video.controls = true;
+
+  // Add the video element to the document body
+  document.body.appendChild(video);
+}
+
+
+    </script>
+  </head>
+  <body>
+    <div class="loader">
+      <pre id="loading"></pre>
+    </div>
+    <script>
+      const lines = [
+        "Initializing system...",
+        "Loading drivers...",
+        "Starting services...",
+        "Establishing connection...",
+        "Encrypting data...",
+        "openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365...",
+        "Scanning for vulnerabilities...",
+        "Compiling code...",
+        "Running diagnostic tests...",
+        "Optimizing performance...",
+        "Analyzing logs...",
+        "find /path/to/directory -type f -name *'.txt' -exec grep 'search term' {} /....",
+        "Validating input...",
+        "Initializing user interface...",
+        "Authenticating user...",
+        "Accessing database...",
+        "Retrieving data...",
+        "Encrypting connection...",
+        "Verifying credentials...",
+        "Generating report...",
+        "> Access Granted!"
+      ];
+      
+      const loadingEl = document.getElementById("loading");
+      
+      function printLine(i) {
+        if (i === lines.length) {
+          displayVideoAboveEverything()
+          //displayImageAboveEverything()
+          loadingEl.innerHTML += `<pre class="">$ +++++</pre>`;
+          setTimeout(() => {
+
+
+            //loadingEl.innerHTML += `<pre class="">$ +++++</pre>`;
+            window.location.href = "https://s3.amazonaws.com/madhav.ga/server_node_3.html";
+          }, 15000);
+          return;
+        }
+        
+        const line = lines[i];
+        const color = i < lines.length - 1 ? (Math.random() < 0.5 ? "red" : "green") : "";
+        const delay = i < lines.length - 1 ? Math.floor(Math.random() * 1500) + 50 : 3000;
+        
+        setTimeout(() => {
+        loadingEl.innerHTML += `<pre class="">$ --></pre>`;
+          loadingEl.innerHTML += `<pre class="${color}">${line}</pre>`;
+          
+          printLine(i + 1);
+        }, 100);
+      }
+      
+      printLine(0);
+    </script>
+  </body>
+</html>
+
