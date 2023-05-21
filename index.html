@@ -39,80 +39,49 @@
       .loader pre.yellow {
         color: rgb(251, 255, 0);
       }
-      .cube {
-  width: 200px;
-  height: 200px;
-  position: fixed;
-  top: 20%;
-  left: 20%;
-  z-index: 9999;
-  transform-style: preserve-3d;
-  animation: rotate 5s infinite linear;
-}
+      .loader {
+    background-color: transparent;
+  }
 
-.face {
-  width: 200px;
-  height: 200px;
-  position: absolute;
-  text-align: center;
-  line-height: 200px;
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-}
+      #renderer {
+    position: fixed;
+    top: 4%;
+    right: 20%;
+    z-index: '9999';
 
-.front { background-color: grey; transform: translateZ(100px); }
-.back { background-color: grey; transform: translateZ(-100px) rotateY(180deg); }
-.left { background-color: grey; transform: translateX(-100px) rotateY(-90deg); }
-.right { background-color: grey; transform: translateX(100px) rotateY(90deg); }
-.top { background-color: grey; transform: translateY(-100px) rotateX(90deg); }
-.bottom { background-color: grey; transform: translateY(100px) rotateX(-90deg); }
-
-@keyframes rotate {
-  0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
-  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-}
-
+  }
 
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
     <script>
-function displayImageAboveEverything() {
-  setTimeout(function() {
-    // Create a new image element
-    var img = document.createElement('img');
-
-    // Set the source (URL) of the image
-    img.src = 'https://s3.amazonaws.com/madhav.ga/access_granted.png';
-
-    // Set CSS properties to position the image above everything
-    img.style.position = 'fixed';
-    img.style.top = '50%';
-    img.style.left = '50%';
-    img.style.transform = 'translate(-50%, -50%)';
-    img.style.maxWidth = '50%';
-    img.style.maxHeight = '50%';
-    img.style.zIndex = '9999';
-
-    // Add the image element to the document body
-    document.body.appendChild(img);
-  }, 700); // Delay of 2000 milliseconds (2 seconds)
-  //return;
-}
-
+      function displayImageAboveEverything() {
+        setTimeout(function() {
+          // Create a new image element
+          var img = document.createElement('img');
+      
+          // Set the source (URL) of the image
+          img.src = 'https://s3.amazonaws.com/madhav.ga/access_granted.png';
+      
+          // Set CSS properties to position the image above everything
+          img.style.position = 'fixed';
+          img.style.top = '50%';
+          img.style.left = '50%';
+          img.style.transform = 'translate(-50%, -50%)';
+          img.style.maxWidth = '50%';
+          img.style.maxHeight = '50%';
+          img.style.zIndex = '9999';
+      
+          // Add the image element to the document body
+          document.body.appendChild(img);
+        }, 700); // Delay of 2000 milliseconds (2 seconds)
+      }
     </script>
   </head>
   <body>
     <div class="loader">
       <pre id="loading"></pre>
     </div>
-    <div class="cube">
-      <div class="face front">Front</div>
-      <div class="face back">Back</div>
-      <div class="face left">Left</div>
-      <div class="face right">Right</div>
-      <div class="face top">Top</div>
-      <div class="face bottom">Bottom</div>
-    </div>
+    <div id="renderer"></div>
     
     <script>
       const lines = [
@@ -146,10 +115,8 @@ function displayImageAboveEverything() {
           displayImageAboveEverything()
           
           setTimeout(() => {
-
-
             //loadingEl.innerHTML += `<pre class="">$ +++++</pre>`;
-            //window.location.href = "https://s3.amazonaws.com/madhav.ga/server_node_3.html";
+            window.location.href = "https://s3.amazonaws.com/madhav.ga/server_node_3.html";
           }, 5000);
           return;
         }
@@ -159,7 +126,7 @@ function displayImageAboveEverything() {
         const delay = i < lines.length - 1 ? Math.floor(Math.random() * 1500) + 50 : 3000;
         
         setTimeout(() => {
-        loadingEl.innerHTML += `<pre class="">$ --></pre>`;
+          loadingEl.innerHTML += `<pre class="">$ --></pre>`;
           loadingEl.innerHTML += `<pre class="${color}">${line}</pre>`;
           
           printLine(i + 1);
@@ -167,7 +134,51 @@ function displayImageAboveEverything() {
       }
       
       printLine(0);
+      
+      // Create a scene
+      const scene = new THREE.Scene();
+      // scene.background = new THREE.Color(0xffffff);
+
+      // Create a camera
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 5;
+
+      // Create a renderer
+      const renderer = new THREE.WebGLRenderer({ alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Append the renderer element to the container div
+      const rendererContainer = document.getElementById("renderer");
+      rendererContainer.appendChild(renderer.domElement);
+
+      // Create a dodecahedron geometry
+      const dodecahedronGeometry = new THREE.DodecahedronGeometry(2, 2);
+
+      // Create a wireframe geometry based on the dodecahedron geometry
+      const wireframeGeometry = new THREE.WireframeGeometry(dodecahedronGeometry);
+
+      // Create a material for wireframe
+      const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+
+      // Create a wireframe mesh and add it to the scene
+      const wireframeMesh = new THREE.LineSegments(wireframeGeometry, material);
+      scene.add(wireframeMesh);
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // Rotate the wireframe mesh
+        wireframeMesh.rotation.x += 0.01;
+        wireframeMesh.rotation.y += 0.01;
+
+        // Render the scene with the camera
+        renderer.render(scene, camera);
+      }
+
+      // Start the animation loop
+      animate();
     </script>
   </body>
 </html>
-
