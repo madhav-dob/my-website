@@ -39,28 +39,40 @@
       .loader pre.yellow {
         color: rgb(251, 255, 0);
       }
-
-
-      .rotate-element {
+      .cube {
   width: 200px;
   height: 200px;
-  background-color: blue;
-  transform-style: preserve-3d;
-  animation: rotate 5s infinite linear;
   position: fixed;
-  top: 30%;
+  top: 20%;
   left: 20%;
   z-index: 9999;
+  transform-style: preserve-3d;
+  animation: rotate 5s infinite linear;
 }
 
-@keyframes rotate {
-  0% {
-    transform: rotateX(0) rotateY(0) rotateZ(0);
-  }
-  100% {
-    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-  }
+.face {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  text-align: center;
+  line-height: 200px;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
 }
+
+.front { background-color: grey; transform: translateZ(100px); }
+.back { background-color: grey; transform: translateZ(-100px) rotateY(180deg); }
+.left { background-color: grey; transform: translateX(-100px) rotateY(-90deg); }
+.right { background-color: grey; transform: translateX(100px) rotateY(90deg); }
+.top { background-color: grey; transform: translateY(-100px) rotateX(90deg); }
+.bottom { background-color: grey; transform: translateY(100px) rotateX(-90deg); }
+
+@keyframes rotate {
+  0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
+  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+}
+
 
     </style>
     <script>
@@ -93,8 +105,13 @@ function displayImageAboveEverything() {
     <div class="loader">
       <pre id="loading"></pre>
     </div>
-    <div class="rotate-element">
-      <p>Hello, I'm rotating!</p>
+    <div class="cube">
+      <div class="face front">Front</div>
+      <div class="face back">Back</div>
+      <div class="face left">Left</div>
+      <div class="face right">Right</div>
+      <div class="face top">Top</div>
+      <div class="face bottom">Bottom</div>
     </div>
     
     <script>
