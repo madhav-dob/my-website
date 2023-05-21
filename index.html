@@ -39,6 +39,29 @@
       .loader pre.yellow {
         color: rgb(251, 255, 0);
       }
+
+
+      .rotate-element {
+  width: 200px;
+  height: 200px;
+  background-color: blue;
+  transform-style: preserve-3d;
+  animation: rotate 5s infinite linear;
+  position: fixed;
+  top: 30%;
+  left: 20%;
+  z-index: 9999;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateX(0) rotateY(0) rotateZ(0);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}
+
     </style>
     <script>
 function displayImageAboveEverything() {
@@ -70,6 +93,10 @@ function displayImageAboveEverything() {
     <div class="loader">
       <pre id="loading"></pre>
     </div>
+    <div class="rotate-element">
+      <p>Hello, I'm rotating!</p>
+    </div>
+    
     <script>
       const lines = [
         "Initializing system...",
